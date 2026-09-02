@@ -1,0 +1,408 @@
+/* ============================================================
+   COVER.CSS — Cover split-screen, music button, preloader fix
+   Preloader CSS sudah inline di index.html, di sini hanya
+   styling untuk cover panels dan music toggle
+   ============================================================ */
+
+
+/* ─── MUSIC BUTTON ────────────────────────────────────────── */
+.music-button {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: var(--z-music);
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--white-20);
+  display: none;                  /* Hidden sampai musik ready */
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-normal),
+              transform var(--transition-fast),
+              border-color var(--transition-normal);
+}
+
+.music-button.visible {
+  display: flex;
+}
+
+.music-button:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.06);
+}
+
+.music-button:active {
+  transform: scale(0.95);
+}
+
+/* Icon swap berdasarkan state */
+.music-button.paused .music-icon--play  { display: block; }
+.music-button.paused .music-icon--pause { display: none;  }
+.music-button:not(.paused) .music-icon--play  { display: none;  }
+.music-button:not(.paused) .music-icon--pause { display: block; }
+
+/* Animasi saat musik bermain */
+.music-button:not(.paused) .music-icon--pause {
+  animation: music-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes music-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.15); }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   COVER LEFT PANEL — Desktop sidebar navigasi
+   ═══════════════════════════════════════════════════════════
+   
+   Layout trick dari Sora:
+   Container fixed full-viewport dengan padding-right: 500px.
+   Ini membuat area konten = viewport - 500px (di kiri).
+   Child (bg) mengisi area konten tersebut dengan background image.
+   500px di kanan kosong → cover-right terlihat di belakangnya.
+   
+   ┌─────────────────────┬──────────┐
+   │  Konten left panel  │ padding  │
+   │  (bg image + text)  │  500px   │
+   │                     │ (kosong) │
+   └─────────────────────┴──────────┘
+                                 ↑ cover-right muncul di sini
+   ═══════════════════════════════════════════════════════════ */
+
+.cover-left {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-cover-left);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 0;
+  padding-right: var(--cover-left-width);  /* ← trik utama */
+}
+
+/* Background image + overlay */
+.cover-left__bg {
+  position: absolute;
+  inset: 0;
+  right: var(--cover-left-width);  /* Hanya cover area kiri */
+  background-image: var(--hero-image);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.cover-left__bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-black);
+  opacity: 0.6;
+}
+
+/* Content area */
+.cover-left__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px;
+  flex: 1;
+}
+
+/* "THE WEDDING OF" label */
+.cover-label {
+  font-family: var(--font-heading);
+  font-size: var(--fs-cover-label);
+  font-weight: var(--fw-light);
+  color: var(--color-accent);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+
+/* Nama mempelai di left panel */
+.cover-name {
+  font-family: var(--font-display);
+  font-size: 80px;
+  font-weight: var(--fw-regular);
+  color: var(--color-white);
+  line-height: 1;
+}
+
+/* Ampersand — watermark di belakang nama */
+.cover-ampersand {
+  font-family: var(--font-serif);
+  font-size: 80px;
+  font-weight: var(--fw-regular);
+  color: var(--white-40);
+  position: absolute;
+  left: -10px;
+  top: 80px;
+  pointer-events: none;
+  user-select: none;
+}
+
+
+/* ─── COVER NAV — tombol navigasi section ──────────────────── */
+.cover-nav {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 80px 20px 42px;
+}
+
+.cover-nav__link {
+  font-family: var(--font-serif);
+  font-size: var(--fs-nav);
+  font-weight: var(--fw-regular);
+  color: var(--color-white);
+  line-height: 1.2;
+  transition: color var(--transition-normal),
+              opacity var(--transition-normal);
+  opacity: 0.7;
+}
+
+.cover-nav__link:hover {
+  color: var(--color-accent);
+  opacity: 1;
+}
+
+
+/* ─── COVER COPYRIGHT ─────────────────────────────────────── */
+.cover-copyright {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: var(--fw-regular);
+  font-style: italic;
+  color: var(--white-60);
+  padding: 0 40px 24px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   COVER RIGHT PANEL — Hero screen
+   ═══════════════════════════════════════════════════════════ */
+
+.cover-right {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-cover);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  padding: 8% 0 10%;
+  gap: 60px;
+  background-image: var(--hero-image);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+/* Overlay hitam tipis di atas background */
+.cover-right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-black);
+  opacity: 0.2;
+  z-index: 0;
+}
+
+/* Gradient overlay di atas — transparan ke hitam dari bawah */
+.cover-right__gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 360px;
+  background: linear-gradient(0deg, transparent 0%, rgba(0,0,0,0.5) 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ─── Top section: label + names + date ───────────────────── */
+.cover-right__top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* Label di right panel — sama style dengan left */
+.cover-right__top .cover-label {
+  margin-bottom: 0;
+}
+
+/* Container nama di right panel */
+.cover-right__names {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0;
+  margin-bottom: -10px;
+}
+
+/* Nama besar di right panel */
+.cover-name-lg {
+  font-family: var(--font-display);
+  font-size: var(--fs-cover-name);
+  font-weight: var(--fw-regular);
+  color: var(--color-white);
+  line-height: var(--lh-tight);
+  text-align: center;
+}
+
+/* Ampersand watermark di right panel */
+.cover-ampersand--watermark {
+  font-family: var(--font-serif);
+  font-size: var(--fs-cover-name);
+  font-weight: var(--fw-regular);
+  color: var(--white-25);
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  /* Posisi disesuaikan di responsive.css jika perlu */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Tanggal */
+.cover-date {
+  font-family: var(--font-heading);
+  font-size: var(--fs-cover-date);
+  font-weight: var(--fw-light);
+  color: var(--color-white);
+  letter-spacing: var(--ls-wide);
+  text-align: center;
+}
+
+
+/* ─── Middle section: dear + guest + button ───────────────── */
+.cover-right__middle {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  text-align: center;
+}
+
+.cover-dear {
+  font-family: var(--font-heading);
+  font-size: var(--fs-cover-dear);
+  font-weight: var(--fw-light);
+  color: var(--color-white);
+  letter-spacing: var(--ls-wide);
+}
+
+.cover-guest {
+  font-family: var(--font-display);
+  font-size: var(--fs-cover-guest);
+  font-weight: var(--fw-regular);
+  color: var(--color-white);
+  line-height: var(--lh-tight);
+}
+
+.cover-divider {
+  width: 60px;
+  height: 1px;
+  background-color: var(--color-accent);
+  opacity: 0.6;
+  margin: var(--space-sm) 0;
+}
+
+.cover-disclaimer {
+  font-family: var(--font-heading);
+  font-size: var(--fs-cover-disclaimer);
+  font-weight: var(--fw-light);
+  color: var(--white-60);
+  max-width: 280px;
+  line-height: var(--lh-relaxed);
+}
+
+/* ─── OPEN INVITATION button ──────────────────────────────── */
+.cover-open-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  padding: 12px 32px;
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  color: var(--color-accent);
+  font-family: var(--font-heading);
+  font-size: var(--fs-btn);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  transition: background var(--transition-normal),
+              color var(--transition-normal),
+              transform var(--transition-fast);
+}
+
+.cover-open-btn:hover {
+  background: var(--color-accent);
+  color: var(--color-black);
+}
+
+.cover-open-btn:active {
+  transform: scale(0.97);
+}
+
+.cover-open-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+
+/* ─── Mobile-only gradient (bottom) ───────────────────────── */
+.cover-right__mobile-gradient {
+  display: none;  /* Shown via responsive.css on mobile */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   PRELOADER — fix untuk edge case
+   (CSS utama sudah inline di index.html)
+   ═══════════════════════════════════════════════════════════ */
+
+/* Pastikan preloader selalu di atas cover */
+.preloader {
+  z-index: calc(var(--z-preloader) + 1);
+}
+
+/* Hide scrollbar saat preloader aktif */
+.preloader ~ * {
+  pointer-events: none;
+}
