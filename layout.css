@@ -1,0 +1,174 @@
+/* ============================================================
+   LAYOUT.CSS — Scroll snap, sections, containers
+   Ini adalah tulang punggung layout seluruh halaman
+   ============================================================ */
+
+
+/* ─── HTML & BODY ─────────────────────────────────────────── */
+html {
+  overflow: hidden;               /* Locked sampai cover dibuka */
+  scroll-snap-type: y mandatory;  /* Aktif setelah cover dibuka */
+}
+
+html.no-snap {
+  scroll-snap-type: none !important;
+}
+
+body {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-regular);
+  overflow: hidden;               /* Locked sampai cover dibuka */
+  overflow-y: auto;               /* Tapi tetap bisa scroll */
+}
+
+/* Setelah cover dibuka, JS tambah class ini ke body */
+body.cover-dismissed {
+  overflow-y: auto;
+}
+
+
+/* ─── MAIN CONTENT — scrollable area ──────────────────────── */
+.main-content {
+  /* Tidak perlu styling khusus — body yang melakukan scroll */
+  /* Container ini ada untuk semantik HTML saja */
+}
+
+
+/* ─── SNAP SECTION — setiap full-screen section ───────────── */
+.snap-section {
+  min-height: 100vh;
+  min-height: 100dvh;             /* Dynamic viewport height (mobile) */
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: var(--section-padding);
+  overflow: hidden;
+}
+
+/* Section yang butuh scroll internal (konten panjang) */
+.snap-section--scrollable {
+  overflow-y: auto;
+  justify-content: flex-start;
+  padding-top: calc(var(--section-padding) + 40px);
+  padding-bottom: calc(var(--section-padding) + 40px);
+}
+
+
+/* ─── SECTION INNER — centered content wrapper ────────────── */
+.section-inner {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+
+/* ─── SECTION LABEL — "THE GROOM", "RSVP", dll ────────────── */
+.section-label {
+  font-family: var(--font-heading);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-light);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+
+/* ─── SCROLL RESTORATION — selalu mulai dari atas ─────────── */
+/* (Dijalankan via JS juga, ini sebagai fallback CSS) */
+html {
+  scroll-behavior: auto;  /* Smooth scroll dihandle manual via JS */
+}
+
+
+/* ─── NO-SNAP — disable snap saat input focus (mobile) ────── */
+/* JS menambahkan class ini ke <html> saat input/textarea/select focus */
+/* Dan menghapusnya setelah blur dengan delay 100ms */
+/* Definisi class ada di atas (html.no-snap) */
+
+
+/* ─── UTILITY: full bleed background ───────────────────────── */
+.bg-full {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+/* Overlay hitam di atas background */
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-black);
+  z-index: 0;
+}
+
+/* Gradient overlay — transparan ke hitam (dari atas ke bawah) */
+.bg-gradient-down {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, transparent 0%, rgba(0,0,0,0.5) 100%);
+  z-index: 0;
+}
+
+/* Gradient overlay — hitam ke transparan (dari bawah ke atas) */
+.bg-gradient-up {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.5) 100%);
+  z-index: 0;
+}
+
+
+/* ─── UTILITY: text alignment ─────────────────────────────── */
+.text-center { text-align: center; }
+.text-left   { text-align: left; }
+.text-right  { text-align: right; }
+
+
+/* ─── UTILITY: spacing helpers ────────────────────────────── */
+.mt-auto { margin-top: auto; }
+.mb-auto { margin-bottom: auto; }
+
+
+/* ─── PRINT — hide everything except content ───────────────── */
+@media print {
+  .preloader,
+  .cover-left,
+  .cover-right,
+  .music-button,
+  .frame-popup,
+  #mp3-player {
+    display: none !important;
+  }
+
+  html {
+    overflow: visible !important;
+    scroll-snap-type: none !important;
+  }
+
+  body {
+    overflow: visible !important;
+  }
+
+  .snap-section {
+    min-height: auto;
+    scroll-snap-align: none;
+    scroll-snap-stop: auto;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    padding: 20px 0;
+  }
+}
