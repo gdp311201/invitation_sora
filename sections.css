@@ -1,84 +1,619 @@
-/* ==========================================
-   SECTIONS STYLES
-   ========================================== */
+/* ============================================================
+   SECTIONS.CSS — Styling setiap content section
+   Urutan mengikuti alur halaman: opening → closing
+   ============================================================ */
 
-/* Locked state during cover view */
-body.is-locked {
-  overflow: hidden !important;
-  height: 100vh;
+
+/* ═══════════════════════════════════════════════════════════
+   #OPENING — Ayat Alkitab + Nama + Hashtag
+   ═══════════════════════════════════════════════════════════ */
+
+#opening {
+  background-color: var(--color-black);
 }
 
-/* Base Section Layout */
-.section {
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 4rem 1.5rem;
-  box-sizing: border-box;
-  position: relative;
-}
-
-/* 1. Hero Section */
-.section-hero {
-  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), var(--hero-image, url('../assets/images/hero-bg.jpg')) center/cover no-repeat;
-  text-align: center;
-  color: var(--color-text-light, #ffffff);
-}
-
-.section-hero__title {
+#opening .section-inner h2 {
   font-family: var(--font-heading);
-  font-size: clamp(2.5rem, 8vw, 4.5rem);
-  margin: 1rem 0;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-light);
+  color: var(--color-accent);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
 }
 
-.section-hero__guest {
-  margin: 2rem 0;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
-  border-radius: 8px;
+#opening .section-inner p {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-weight: var(--fw-regular);
+  font-style: italic;
+  color: var(--white-80);
+  line-height: var(--lh-relaxed);
+  max-width: 540px;
 }
 
-/* 2. Love Story Background Support */
-.section-lovestory {
-  background-color: var(--color-bg-dark, #121212);
+/* Names row: Samuel & Evelyn */
+.opening-names {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-2xl);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.opening-names p:first-child,
+.opening-names p:nth-child(3) {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-weight: var(--fw-regular);
+  color: var(--color-white);
+}
+
+.opening-amp {
+  font-family: var(--font-serif);
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  color: var(--white-40);
+  font-style: italic;
+}
+
+.opening-names p:last-child {
+  width: 100%;
+  font-family: var(--font-heading);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-light);
+  color: var(--color-accent);
+  letter-spacing: var(--ls-wide);
+  text-align: center;
+  margin-top: var(--space-sm);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   #COUPLE & #BRIDE — Profil mempelai
+   Dua section terpisah, struktur CSS sama
+   ═══════════════════════════════════════════════════════════ */
+
+.section-couple {
+  background-color: var(--color-black);
+}
+
+/* Gradient overlay — subtle depth, absolute */
+.section-couple__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(241, 193, 147, 0.04) 0%,
+    transparent 40%,
+    transparent 60%,
+    rgba(241, 193, 147, 0.03) 100%
+  );
+  pointer-events: none;
+}
+
+/* Label sudah di-handle oleh .section-label di layout.css */
+
+/* Nama pendek — Samuel / Evelyn */
+.section-couple__name {
   position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: var(--fs-name);
+  font-weight: var(--fw-regular);
+  color: var(--color-white);
+  line-height: var(--lh-tight);
+  margin-top: var(--space-xs);
 }
 
+/* Nama lengkap */
+.section-couple__fullname {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-heading);
+  font-size: var(--fs-fullname);
+  font-weight: var(--fw-light);
+  color: var(--white-80);
+  letter-spacing: var(--ls-wide);
+  margin-top: var(--space-sm);
+}
+
+/* Info orang tua */
+.section-couple__parent {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-heading);
+  font-size: var(--fs-parent);
+  font-weight: var(--fw-light);
+  color: var(--white-60);
+  line-height: var(--lh-relaxed);
+  text-align: center;
+  margin-top: var(--space-md);
+}
+
+.section-couple__parent em {
+  font-style: italic;
+  color: var(--color-accent);
+}
+
+/* Instagram button sudah di-handle oleh .btn-outline di components.css */
+
+
+/* ═══════════════════════════════════════════════════════════
+   #LOVESTORY — Cerita cinta, 2-column grid
+   ═══════════════════════════════════════════════════════════ */
+
+.section-lovestory {
+  background-color: var(--color-black);
+  justify-content: flex-start;
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+  overflow-y: auto;
+}
+
+/* Background image (absolute) */
 .section-lovestory__bg {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background-image: var(--hero-image);
   background-size: cover;
-  background-position: center;
+  background-position: center center;
+  background-repeat: no-repeat;
   opacity: 0.15;
   pointer-events: none;
 }
 
-/* Music Floating Toggle Button */
-.music-toggle-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 999;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  background: var(--color-primary, #d4af37);
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+/* Title */
+.section-lovestory__title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-regular);
+  color: var(--color-white);
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+  max-width: 500px;
 }
 
-.music-toggle-btn.hidden {
-  display: none !important;
+/* 2-column grid */
+.section-lovestory__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2xl);
+  width: 100%;
+  max-width: 900px;
+}
+
+/* Each column */
+.section-lovestory__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
+
+/* Individual chapter */
+.lovestory-chapter h3 {
+  font-family: var(--font-display);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  color: var(--color-accent);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.lovestory-chapter p {
+  font-family: var(--font-heading);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-light);
+  color: var(--white-80);
+  line-height: var(--lh-relaxed);
+}
+
+/* Scroll hint — "Scroll to read more" + arrow */
+.lovestory-scroll-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.lovestory-scroll-hint p {
+  font-family: var(--font-heading);
+  font-size: var(--fs-tiny);
+  font-weight: var(--fw-light);
+  color: var(--white-50);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+}
+
+.lovestory-scroll-hint img {
+  width: 80px;
+  height: auto;
+  opacity: 0.5;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   #EVENTS — 3 event cards
+   ═══════════════════════════════════════════════════════════ */
+
+.section-events {
+  background-color: var(--color-black);
+  justify-content: flex-start;
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-3xl);
+  overflow-y: auto;
+}
+
+/* Title */
+.section-events__title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: var(--fw-regular);
+  color: var(--color-white);
+  text-align: center;
+  line-height: var(--lh-tight);
+  margin-bottom: var(--space-2xl);
+}
+
+/* Event cards container — 3 columns */
+.section-events__list {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* Individual event card */
+.event-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  border: 1px solid var(--white-12);
+  border-radius: var(--radius-lg);
+  background: var(--black-28);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.event-card__date {
+  font-family: var(--font-heading);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-light);
+  color: var(--white-60);
+  letter-spacing: var(--ls-wide);
+  line-height: var(--lh-relaxed);
+}
+
+.event-card__name {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-regular);
+  color: var(--color-accent);
+}
+
+.event-card__time {
+  font-family: var(--font-heading);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-light);
+  color: var(--color-white);
+  letter-spacing: var(--ls-wide);
+}
+
+.event-card__venue {
+  font-family: var(--font-heading);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-light);
+  color: var(--white-60);
+  line-height: var(--lh-relaxed);
+  flex: 1;
+}
+
+.event-card__venue strong {
+  font-weight: var(--fw-medium);
+  color: var(--white-80);
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* Google Maps button di event card — override alignment */
+.event-card .btn-outline {
+  align-self: flex-start;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   #RUNDOWN — Gambar rundown
+   ═══════════════════════════════════════════════════════════ */
+
+.section-rundown {
+  background-color: var(--color-black);
+}
+
+.rundown-image {
+  max-width: 480px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   #COUNTDOWN — Hitung mundur
+   ═══════════════════════════════════════════════════════════ */
+
+.section-countdown {
+  background-color: var(--color-black);
+}
+
+.section-countdown__subtitle {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-heading);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-light);
+  color: var(--white-60);
+  margin-bottom: var(--space-2xl);
+  text-align: center;
+}
+
+/* Countdown grid — 4 items in a row */
+.countdown {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+}
+
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  min-width: 64px;
+}
+
+.countdown-digits {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: var(--fw-regular);
+  color: var(--color-white);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-label {
+  font-family: var(--font-heading);
+  font-size: var(--fs-tiny);
+  font-weight: var(--fw-light);
+  color: var(--white-50);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+}
+
+/* Calendar button di countdown */
+.section-countdown .btn-outline {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   #DRESSCODE — Palet warna
+   ═══════════════════════════════════════════════════════════ */
+
+.section-dresscode {
+  background-color: var(--color-black);
+}
+
+.section-dresscode__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  max-width: 500px;
+  width: 100%;
+}
+
+/* Background container */
+.section-dresscode__bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(241, 193, 147, 0.06) 0%,
+    transparent 50%,
+    rgba(241, 193, 147, 0.04) 100%
+  );
+  pointer-events: none;
+}
+
+/* Color swatches row */
+.dresscode-palette {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.dresscode-swatch {
+  width: 48px;
+  height: 64px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--white-12);
+  transition: transform var(--transition-fast),
+              box-shadow var(--transition-normal);
+}
+
+.dresscode-swatch:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Description */
+.dresscode-desc {
+  font-family: var(--font-heading);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-light);
+  color: var(--white-60);
+  text-align: center;
+  line-height: var(--lh-relaxed);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   #LIVESTREAM — Info live streaming
+   ═══════════════════════════════════════════════════════════ */
+
+.section-livestream {
+  background-color: var(--color-black);
+}
+
+/* Background container */
+.section-livestream__bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(241, 193, 147, 0.04) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.section-livestream__title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+  font-weight: var(--fw-regular);
+  color: var(--color-white);
+  text-align: center;
+  margin-bottom: var(--space-md);
+  max-width: 500px;
+}
+
+.section-livestream__datetime {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-heading);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-light);
+  color: var(--white-60);
+  text-align: center;
+  line-height: var(--lh-relaxed);
+  margin-bottom: var(--space-xl);
+}
+
+/* JOIN LIVE button */
+.section-livestream .btn-outline {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   #CLOSING — Penutup + branding
+   ═══════════════════════════════════════════════════════════ */
+
+.section-closing {
+  background-color: var(--color-black);
+}
+
+/* Subtle background */
+.section-closing__bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(241, 193, 147, 0.03) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.section-closing__title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+  font-weight: var(--fw-regular);
+  color: var(--color-white);
+  text-align: center;
+  margin-bottom: var(--space-md);
+}
+
+.section-closing__message {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-heading);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-light);
+  color: var(--white-60);
+  text-align: center;
+  line-height: var(--lh-relaxed);
+  margin-bottom: var(--space-xl);
+}
+
+.section-closing__names {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-regular);
+  color: var(--color-accent);
+  text-align: center;
+  margin-bottom: var(--space-3xl);
+}
+
+/* Branding — absolute bottom */
+.section-closing__brand {
+  position: absolute;
+  bottom: var(--space-xl);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.section-closing__brand a {
+  display: block;
+  line-height: 1;
+}
+
+.section-closing__brand img {
+  height: 20px;
+  width: auto;
+  opacity: 0.5;
+  transition: opacity var(--transition-normal);
+}
+
+.section-closing__brand a:hover img {
+  opacity: 0.8;
+}
+
+.section-closing__brand span {
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: var(--fw-light);
+  color: var(--white-40);
+  letter-spacing: var(--ls-wide);
 }
