@@ -1,0 +1,156 @@
+@media (max-width: 767px) {
+
+  /* ─── COVER ─────────────────────────────────────────────── */
+
+  /* Sembunykan cover-left pada tablet & mobile */
+  .cover-left {
+    display: none;
+  }
+
+  /* Sembunykan watermark ampersand pada mobile agar tidak overlap nama */
+  @media (max-width: 767px) {
+    .cover-ampersand--watermark {
+      display: none;
+    }
+  }
+
+  /* Perbaiki tinggi gradient pada mobile agar lebih banyak ruang */
+  @media (max-width: 767px) {
+    .cover-right__mobile-gradient {
+      height: 50%;
+    }
+  }
+
+  /* Kurangi margin nama pada mobile agar tidak overlap ampersand */
+  @media (max-width: 767px) {
+    .cover-right__names {
+      margin-bottom: 0;
+    }
+  }
+
+  /* ─── LOVE STORY ─────────────────────────────────────────────── */
+
+  /* 1 column pada tablet, 2 columns pada desktop */
+  @media (max-width: 1024px) {
+    .section-lovestory__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Sembunykan scroll hint (hanya desktop) */
+  @media (max-width: 767px) {
+    .lovestory-scroll-hint {
+      display: none;
+    }
+  }
+
+  /* ─── EVENTS ─────────────────────────────────────────────── */
+
+  /* Tablet: 2 columns */
+  @media (max-width: 1024px) {
+    .section-events__list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Hapus border-radius pada mobile agar lebih bersih */
+  @media (max-width: 767px) {
+    .event-card {
+      border-radius: 0;
+    }
+  }
+
+  /* ─── RUNDOWN ──────────────────────────────────────────── */
+
+  /* Gambar rundown full width pada mobile */
+  @media (max-width: 767px) {
+    .rundown-image {
+      max-width: 100%;
+    }
+  }
+
+  /* ─── RSVP FORM ──────────────────────────────────────── */
+
+  /* Hapus padding pada mobile agar form full width */
+  @media (max-width:  │0767px) {
+    .rsvp-form {
+      padding: 0;
+    }
+  }
+
+  /* Tinggi max-height agar scroll lebih nyaman di mobile */
+  @media (max-width:  │0767px) {
+    .rsvp-comments {
+      max-height: 80vh;
+    }
+  }
+
+  /* ─── RSVP COMMENTS ──────────────────────────────────────── */
+
+  /* Tidak perlu diubah karena sudah handle oleh js (tidak ada perubahan di sini) */
+
+  /* ─── GIFT CONTAINER ──────────────────────────────────── */
+
+  /*
+     Khusus mengubah sama sekali untuk mobile.
+     Pada 3 bagian:
+     
+     1. Hapus semua transisi dan animasi → elemen langsung tampil
+     2. Container langsung penuh, tanpa padding, tanpa border, tanpa shadow
+     3. Close button: static (bukan absolute lagi), tampil langsung
+     4. Wrapper langsung terbuka, tanpa animasi, tanpa delay
+     5. Items opacity: 1 → 0 (setiap item + divider)
+     6. Dividers opacity: 0.2 → 0 (setiap divider + item)
+  */
+  @media (max-width: 767px) {
+    .gift-container {
+      --transition-delay: 0s !important;
+      transition: none !important;
+    }
+    .gift-open {
+      display: none;
+    }
+    .gift-close {
+      display: block;
+      opacity: 1;
+      position: static;
+    }
+    .gift-wrapper {
+      grid-template-rows: 1fr !important;
+      padding: 0 16px !important;
+    }
+    .gift-content {
+      overflow: visible !important;
+      min-height: 0 !important;
+    }
+    .gift-item {
+      opacity: 1 !important;
+      transition-delay: 0s !important;
+    }
+    .gift-divider {
+      opacity: 0.2 !important;
+      transition-delay: 0s !important;
+    }
+  }
+}
+
+/* ─── CLOSING ──────────────────────────────────────────── */
+
+  /* Pindahkan posisi brand dari absolute ke static untuk mobile */
+  @media (max-width: 767px) {
+  .section-closing__brand {
+    position: relative;
+    bottom: auto;
+    margin-top: var(--space-3xl);
+    padding: 0 var(--space-lg);
+  }
+}
+
+/* ─── GENERAL ─────────────────────────────────────────────── */
+
+/* Tinggi max-width pada mobile agar tidak ada overflow horizontal */
+@media (max-width: 767px) {
+  img {
+    max-width: 100%;
+  }
+}
