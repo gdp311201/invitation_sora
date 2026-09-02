@@ -1,0 +1,31 @@
+/* ==========================================
+   MASTER STYLESHEET - SAMUEL & EVELYN WEDDING
+   ========================================== */
+
+/* 1. CSS Variables & Tokens */
+@import url('./variables.css');
+
+/* 2. Reset & Base Styles */
+@import url('./reset.css');
+
+/* 3. Section Specific Components & Styles */
+@import url('./sections.css');
+
+/* 4. Responsive & Media Queries */
+@import url('./responsive.css');
+
+/* Custom Utility Overrides */
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-body);
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-main);
+  overflow-x: hidden;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
