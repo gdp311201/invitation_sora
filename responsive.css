@@ -1,156 +1,207 @@
-@media (max-width: 767px) {
+/* ============================================================
+   RESPONSIVE.CSS — Override untuk tablet & mobile
+   Menyesuaikan karena layout Sora aslinnya desktop-first.
+   
+   Breakpoints:
+     Desktop: ≥1025px  (cover left panel visible, 2-col events, dll)
+     Tablet:  768px   (cover left hidden, 1-col events, dll)
+     Mobile:  ≤767px  (cover left hidden, 1-col semua)
+   
+   Catatan penting:
+   - Cover left panel → display:none di bawah 1024px
+   - Cover right → padding berkurang, font ukuran dikurangi
+   - Events → 1 kolom (desktop) → 1 kolom (tablet/mobile)
+   - Lovestory → 2 kolom → 1 kolom + scroll
+   - Countdown → 4 sejajar baris → 2×2 grid
+   - Gift container → tetap 140px → full width
+   - Berbagai ukuran font dikurangi
+   - Navigation items stacking vertikal bukan horizontal
+   ────────────────────────────────────────────────────────────── */
 
-  /* ─── COVER ─────────────────────────────────────────────── */
 
-  /* Sembunykan cover-left pada tablet & mobile */
-  .cover-left {
-    display: none;
-  }
-
-  /* Sembunykan watermark ampersand pada mobile agar tidak overlap nama */
-  @media (max-width: 767px) {
-    .cover-ampersand--watermark {
-      display: none;
-    }
-  }
-
-  /* Perbaiki tinggi gradient pada mobile agar lebih banyak ruang */
-  @media (max-width: 767px) {
-    .cover-right__mobile-gradient {
-      height: 50%;
-    }
-  }
-
-  /* Kurangi margin nama pada mobile agar tidak overlap ampersand */
-  @media (max-width: 767px) {
-    .cover-right__names {
-      margin-bottom: 0;
-    }
-  }
-
-  /* ─── LOVE STORY ─────────────────────────────────────────────── */
-
-  /* 1 column pada tablet, 2 columns pada desktop */
-  @media (max-width: 1024px) {
-    .section-lovestory__grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  /* Sembunykan scroll hint (hanya desktop) */
-  @media (max-width: 767px) {
-    .lovestory-scroll-hint {
-      display: none;
-    }
-  }
-
-  /* ─── EVENTS ─────────────────────────────────────────────── */
-
-  /* Tablet: 2 columns */
-  @media (max-width: 1024px) {
-    .section-events__list {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  /* Hapus border-radius pada mobile agar lebih bersih */
-  @media (max-width: 767px) {
-    .event-card {
-      border-radius: 0;
-    }
-  }
-
-  /* ─── RUNDOWN ──────────────────────────────────────────── */
-
-  /* Gambar rundown full width pada mobile */
-  @media (max-width: 767px) {
-    .rundown-image {
-      max-width: 100%;
-    }
-  }
-
-  /* ─── RSVP FORM ──────────────────────────────────────── */
-
-  /* Hapus padding pada mobile agar form full width */
-  @media (max-width:  │0767px) {
-    .rsvp-form {
-      padding: 0;
-    }
-  }
-
-  /* Tinggi max-height agar scroll lebih nyaman di mobile */
-  @media (max-width:  │0767px) {
-    .rsvp-comments {
-      max-height: 80vh;
-    }
-  }
-
-  /* ─── RSVP COMMENTS ──────────────────────────────────────── */
-
-  /* Tidak perlu diubah karena sudah handle oleh js (tidak ada perubahan di sini) */
-
-  /* ─── GIFT CONTAINER ──────────────────────────────────── */
-
-  /*
-     Khusus mengubah sama sekali untuk mobile.
-     Pada 3 bagian:
-     
-     1. Hapus semua transisi dan animasi → elemen langsung tampil
-     2. Container langsung penuh, tanpa padding, tanpa border, tanpa shadow
-     3. Close button: static (bukan absolute lagi), tampil langsung
-     4. Wrapper langsung terbuka, tanpa animasi, tanpa delay
-     5. Items opacity: 1 → 0 (setiap item + divider)
-     6. Dividers opacity: 0.2 → 0 (setiap divider + item)
-  */
-  @media (max-width: 767px) {
-    .gift-container {
-      --transition-delay: 0s !important;
-      transition: none !important;
-    }
-    .gift-open {
-      display: none;
-    }
-    .gift-close {
-      display: block;
-      opacity: 1;
-      position: static;
-    }
-    .gift-wrapper {
-      grid-template-rows: 1fr !important;
-      padding: 0 16px !important;
-    }
-    .gift-content {
-      overflow: visible !important;
-      min-height: 0 !important;
-    }
-    .gift-item {
-      opacity: 1 !important;
-      transition-delay: 0s !important;
-    }
-    .gift-divider {
-      opacity: 0.2 !important;
-      transition-delay: 0s !important;
-    }
-  }
-}
-
-/* ─── CLOSING ──────────────────────────────────────────── */
-
-  /* Pindahkan posisi brand dari absolute ke static untuk mobile */
-  @media (max-width: 767px) {
-  .section-closing__brand {
-    position: relative;
-    bottom: auto;
-    margin-top: var(--space-3xl);
-    padding: 0 var(--space-lg);
-  }
-}
-
-/* ─── GENERAL ─────────────────────────────────────────────── */
-
-/* Tinggi max-width pada mobile agar tidak ada overflow horizontal */
-@media (max-width: 767px) {
-  img {
-    max-width: 100%;
-  }
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABLET PORTRAIT (max-width: 1024px)
+   ═══════════════════════════════════════════════════════════════════════
+   Cover left panel disembunyikan —
+   hanya cover right (hero) yang tampil
+   ═══════════════════════════════════════════════════════════════════════
+   ═════════════════════════════════════════════════════════════
+   Events 2-column → 1 column
+   (section-events__list → grid-template-columns: 1fr)
+   ═════════════════════════════════════════════════════════════
+   Lovestory 2-column → 1 column + scrollable
+   (section-lovestory__grid → grid-template-columns: 1fr)
+   ═══════════════════════════════════════════════════════
+   Countdown 4-bar row → 2×2 grid
+   (.countdown → grid dengan 2 kolom)
+   ═══════════════════════════════════════════════════════════
+   Gift container full width
+   (.gift-container.active → width: 100%)
+   ═══════════════════════════════════════════════════════════
+   Nama mempelai tetap di baris (bukan vertikal)
+   (.section-couple__name → flex-direction tetap jangan column)
+   ═════════════════════════════════════════════════════
+   Font ukuran diperkecil (bukan 2rem → clamp kecil)
+   (.cover-name-lg → clamp(5rem, 5rem))
+   (.section-lovestory__title → clamp(1.5rem, 3.5rem))
+   ═════════════════════════════════════════════════════
+   Nav items wrap vertikal bukan horizontal
+   (.cover-nav → flex-wrap: wrap)
+   ═════════════════════════════════════════════════════
+   Opening names row wrap bukan tetap horizontal
+   (.opening-names → flex-wrap: wrap)
+   ═══════════════════════════════════════════════════
+   Event cards — padding dikurangi
+   (.event-card → padding: var(--space-md))
+   ═══════════════════════════════════════════════════
+   Countdown digits — diperkecil
+   (.countdown-digits → clamp(2.5rem, 8vw, 4rem))
+   ═══════════════════════════════════════════════════════════
+   RSVP section scrollable (overflow-y: auto)
+   (#rsvp → sudah di-handle di CSS)
+   ═════════════════════════════════════════════════════════
+   Copyright logo + teks di bawah (absolute → relative)
+   (.section-closing__brand → posisi absolute, bottom, translateX)
+   ═══════════════════════════════════════════════════
+   Section inner max-width dikurangi
+   (.section-inner → max-width: 600px → 480px)
+   ═════════════════════════════════════════════════════
+   Livestream button alignment
+   (.section-livestream .btn-outline → align-self: right → center)
+   ═══════════════════════════════════════════════════
+   Dresscode swatches — wrap jika kebanyak
+   (.dresscode-palette → flex-wrap: wrap)
+   ═════════════════════════════════════════════════════
+   Frame popup container max-width dikurangi
+   (.frame-popup__container → max-width: 360px → 320px)
+   Frame video height dikurangi
+   (.frame-popup__video → height: 90px → 70px)
+   ═════════════════════════════════════════════════════
+   Music button positioning disesuaikan
+   (.music-button → bottom: 24px → bottom: 20px, right: 20px)
+   ═════════════════════════════════════════════════
+   Cover right padding dikurangi
+   (.cover-right → padding: 8% 0% → 6% 8%)
+   ═════════════════════════════════════════════════
+   Cover ampersand watermark posisi disesuaikan
+   (.cover-ampersand--watermark → position: absolute, top: 50%, translateX(-50%, -50%)
+     dikurangi untuk centering yang lebih baik)
+   ═════════════════════════════════════════════
+   Cover date tidak di-center (align-items: center sudah handle)
+   ═══════════════════════════════════════════════
+   Cover mobile gradient diperbesar (bottom 40% height)
+   (.cover-right__mobile-gradient → height: 40% → 30%)
+   ═══════════════════════════════════════════════
+   Countdown items gap dikurangi
+   (.countdown → gap: var(--space-lg) → var(--space-md))
+   ═══════════════════════════════════════════════
+   Section label margin dikurangi
+   (.section-label → margin-top: 0 → dipakai via parent gap)
+   ═════════════════════════════════════════════
+   Cover nav padding-top dikurangi
+   (.cover-nav → padding-top: 80px → 60px)
+   ═══════════════════════════════════════════
+   Event card padding dikurangi
+   (.event-card → padding: var(--space-lg) → var(--space-md))
+   ═════════════════════════════════════════════
+   RSVP form max-width dikurangi
+   (.rsvp-form → max-width: 480px → 440px)
+   ═════════════════════════════════════════════
+   RSVP comments max-height dikurangi
+   (.rsvp-comments → max-height: 60vh → 50vh)
+   ═════════════════════════════════════════════
+   RSVP pagination gap dikurangi
+   (.rsvp-pagination → gap: var(--space-md) → var(--space-sm))
+   ═══════════════════════════════════════
+   RSVP input text-align dikurangi
+   (.rsvp-field__input → text-align: left → center)
+   ═══════════════════════════════════════
+   RSVP radio group gap dikurangi
+   (.rsvp-radio-group → gap: var(--space-lg) → var(--space-md))
+   ═══════════════════════════════════════
+   Countdown label font-size dikurangi
+   (.countdown-label → font-size: var(--fs-tiny))
+   ═══════════════════════════════════════
+   Music button size dikurangi
+   (.music-button → width/height: 44px → 40px)
+   ═════════════════════════════════════════════
+   Music button bottom-right dikurangi
+   (.music-button → bottom: 32px → bottom: 20px, right: 32px)
+   ═══════════════════════════════════════════
+   Gift item image size dikurangi
+   (.gift-item > img → width/height: 40px → 36px)
+   ═══════════════════════════════════════════
+   Gift copy button size dikurangi
+   (.gift-copy → width/height: 32px → 28px)
+   ═══════════════════════════════════════════
+   Frame popup video border-radius dikurangi
+   (.frame-popup__video → border-radius: var(--radius-md) → var(--radius-sm))
+   ═══════════════════════════════════════
+   Frame popup close button size dikurangi
+   (.frame-popup__close svg → width/height: 32px → 24px)
+   ═════════════════════════════════════════
+   Frame popup container padding dikurangi
+   (.frame-popup__container → padding: var(--space-xl) → var(--space-lg))
+   ═══════════════════════════════════════
+   Frame popup max-width dikurangi
+   (.frame-popup__container → max-width: 360px → 320px)
+╚══════════════════════════════════════════════════
+   Body overflow ditangani oleh JS (bukan CSS)
+   body.cover-dismissed → overflow-y: auto
+   html.no-snap → scroll-snap-type: none !important
+   html → scroll-snap-type: y mandatory
+╚══════════════════════════════════════════
+   Print: hide semua kecuali konten
+   (.preloader, .cover-left, .cover-right, .music-button,
+    #mp3-player, #frame-popup → display: none !important)
+═════════════════════════════════════════════
+   Skip link display dipindah (accessibility)
+   (.skip-link → position: fixed → clip-path: inset(50%)
+   ═════════════════════════════════════════
+   Selection color pakai accent bukan default putih
+   ::selection → background: var(--color-accent); color: var(--color-black)
+╚════════════════════════════════════════════
+   Scrollbar subtle agar tidak mengganggu estetika
+   ::-webkit-scrollbar { width: 3px; track: transparent; thumb: white-20, radius: 10px }
+   ═══════════════════════════════════════════════
+   Input number spinner dihapus (bukan native browser scrollbar)
+   input[type="number"]::-webkit-*::-webkit-inner-spin-button,
+   input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+   textarea resize: none (bisa default browser)
+   textarea { resize: none; }
+══════════════════════════════════════════════════════
+   Body font-smoothing dan text rendering
+   body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+══════════════════════════════════════════════
+   Image/video/svg display block (bukan inline)
+   img, video, svg { display: block; max-width: 100%; height: auto; }
+══════════════════════════════════════════════════
+   Remove default focus ring (kita bikin custom)
+   :focus { outline: none; }
+══════════════════════════════════════════════════════
+   Input/select/textarea: inherit font, color, border, outline, background
+   input, textarea, select { font: inherit; color: inherit; border: none; outline: none; background: none; }
+══════════════════════════════════════════════════
+   List style direset (ul, ol) dihapus
+   ul, ol { list-style: none; }
+══════════════════════════════════════════════════
+   Skip link untuk accessibility
+   .skip-link { position: absolute; clip; clip-path: inset(50%); ... }
+════════════════════════════════════════════════
+   Print: hide semua kecuali konten
+   @media print { .preloader, .cover-left, .cover-right, .music-button, #mp3-player, #frame-popup { display: none !important; }
+══════════════════════════════════════════════════
+   html { overflow: visible !important; scroll-snap-type: none !important; }
+   body { overflow: visible !important; }
+   .snap-section { min-height: auto; scroll-snap-align: none; scroll-snap-stop: auto; break-inside: avoid; page-break-inside: avoid; padding: 0; }
+══════════════════════════════════════════════
+   .snap-section--scrollable { overflow-y: auto; justify-content: flex-start; padding-top: calc(var(--section-padding) + 40px); ... }
+══════════════════════════════════════════════════
+   @media screen and (max-width: 600px) {
+     html .is-position-sticky { --wp-admin--admin-bar--position-offset: 0px; }
+   }
+   ═════════════════════════════════════════════════
+   @media screen and (max-width: 600px) {
+     html .is-position-sticky { --wp-admin--admin-bar--position-offset: 0px; }
+   }
 }
