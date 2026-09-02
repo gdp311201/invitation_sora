@@ -1,0 +1,143 @@
+/* ============================================================
+   VARIABLES.CSS — Semua design token ada di sini
+   Ganti warna/font/spacing di sini, otomatis berubah di seluruh halaman
+   ============================================================ */
+
+:root {
+
+  /* ─── WARNA ──────────────────────────────────────────────── */
+  --color-accent: #F1C193;
+  --color-accent-rgb: 241, 193, 147;
+
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+
+  /* Opacity variants — dipakai di text, border, bg */
+  --white-90: rgba(255, 255, 255, 0.90);
+  --white-80: rgba(255, 255, 255, 0.80);
+  --white-60: rgba(255, 255, 255, 0.60);
+  --white-50: rgba(255, 255, 255, 0.50);
+  --white-40: rgba(255, 255, 255, 0.40);
+  --white-31: rgba(255, 255, 255, 0.31);
+  --white-25: rgba(255, 255, 255, 0.25);
+  --white-20: rgba(255, 255, 255, 0.20);
+  --white-12: rgba(255, 255, 255, 0.12);
+
+  --black-90: rgba(0, 0, 0, 0.90);
+  --black-65: rgba(0, 0, 0, 0.65);
+  --black-50: rgba(0, 0, 0, 0.50);
+  --black-28: rgba(0, 0, 0, 0.28);
+  --black-20: rgba(0, 0, 0, 0.20);
+
+  /* ─── FONT FAMILY ────────────────────────────────────────── */
+  /* Aricena     → Cormorant Garamond (elegant serif, high contrast) */
+  /* Metropolis  → Outfit (geometric sans, clean modern)         */
+  /* Playfair    → Playfair Display (sudah gratis, pertahankan)   */
+  /* Cormorant   → Cormorant Garamond (merge dengan Aricena)      */
+
+  --font-display: 'Cormorant Garamond', 'Playfair Display', serif;
+  --font-heading: 'Outfit', sans-serif;
+  --font-serif:  'Playfair Display', serif;
+  --font-body:   'Outfit', sans-serif;
+
+  /* ─── FONT SIZE — COVER ──────────────────────────────────── */
+  --fs-cover-label:    1rem;
+  --fs-cover-name:     5rem;
+  --fs-cover-date:     0.875rem;
+  --fs-cover-dear:     0.875rem;
+  --fs-cover-guest:    1.5rem;
+  --fs-cover-disclaimer: 0.75rem;
+
+  /* ─── FONT SIZE — NAVIGASI ───────────────────────────────── */
+  --fs-nav: 2rem;
+
+  /* ─── FONT SIZE — SECTION ────────────────────────────────── */
+  --fs-label:     0.75rem;
+  --fs-name:      2rem;
+  --fs-fullname:  1.125rem;
+  --fs-parent:    0.875rem;
+  --fs-title:     1.5rem;
+  --fs-body:      0.875rem;
+  --fs-small:     0.75rem;
+  --fs-tiny:      0.625rem;
+
+  /* ─── FONT SIZE — KOMPONEN ───────────────────────────────── */
+  --fs-btn:       0.75rem;
+  --fs-btn-nav:   2rem;
+  --fs-rsvp-label: 0.75rem;
+  --fs-rsvp-text:  0.875rem;
+  --fs-rsvp-small: 0.625rem;
+  --fs-gift-name:  0.8125rem;
+  --fs-gift-number: 0.75rem;
+
+  /* ─── FONT WEIGHT ────────────────────────────────────────── */
+  --fw-light:    300;
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+  --fw-black:    800;
+
+  /* ─── LETTER SPACING ─────────────────────────────────────── */
+  --ls-tight:   -0.02em;
+  --ls-normal:   0;
+  --ls-wide:     0.08em;
+  --ls-wider:    0.12em;
+  --ls-widest:   0.2em;
+
+  /* ─── LINE HEIGHT ────────────────────────────────────────── */
+  --lh-tight:    1.1;
+  --lh-normal:   1.4;
+  --lh-relaxed:  1.6;
+
+  /* ─── SPACING ────────────────────────────────────────────── */
+  --space-2xs:  2px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   40px;
+  --space-2xl:  60px;
+  --space-3xl:  80px;
+
+  /* ─── BORDER RADIUS ──────────────────────────────────────── */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
+  --radius-full: 50%;
+
+  /* ─── TRANSITION ─────────────────────────────────────────── */
+  --ease-out:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --transition-fast:   0.15s var(--ease-smooth);
+  --transition-normal: 0.3s  var(--ease-smooth);
+  --transition-slow:   0.5s  var(--ease-smooth);
+  --transition-cover:  0.65s var(--ease-smooth);
+  --transition-gift:   0.65s ease-in-out 0.4s;
+
+  /* ─── Z-INDEX LAYERS ─────────────────────────────────────── */
+  --z-base:       1;
+  --z-content:    10;
+  --z-gift:       20;
+  --z-music:      60;
+  --z-cover:      50;
+  --z-cover-left: 51;
+  --z-frame:      70;
+  --z-preloader:  100;
+
+  /* ─── LAYOUT ─────────────────────────────────────────────── */
+  --cover-left-width: 500px;
+  --section-padding: var(--space-xl);
+
+  /* ─── SHADOW ─────────────────────────────────────────────── */
+  --shadow-sm:  0 2px 6px rgba(0, 0, 0, 0.14);
+  --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.22);
+  --shadow-lg:  0 4px 24px rgba(0, 0, 0, 0.10), 0 1px 4px rgba(0, 0, 0, 0.06);
+  --shadow-xl:  0 8px 32px rgba(0, 0, 0, 0.20);
+
+  /* ─── BACKDROP ───────────────────────────────────────────── */
+  --blur-sm:  blur(5px);
+  --blur-md:  blur(12px);
+}
