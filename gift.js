@@ -3,12 +3,12 @@
  * Modul untuk menangani modal Amplop Digital / Hadiah (Rekening, E-Wallet, & Alamat Kirim)
  */
 
-import { INVITATION_CONFIG } from './config.js';
+import { CONFIG } from './config.js';
 
 export function initGift() {
     const giftBtn = document.getElementById('giftBtn') || document.querySelector('.btn-gift');
     const giftModal = document.getElementById('giftModal');
-    const closeModalBtns = document.querySelectorAll('[data-close-modal="gift"]');
+    const closeModalBtns = document.querySelectorAll('[data-close-modal="gift"], .gift-close');
 
     // 1. Inisialisasi Modal Open / Close
     if (giftBtn && giftModal) {
@@ -66,9 +66,10 @@ export function initGift() {
     if (confirmWaBtn) {
         confirmWaBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            const phone = INVITATION_CONFIG.gift?.whatsappPhone || '6281234567890';
-            const groomName = INVITATION_CONFIG.couple?.groom?.nickname || 'Mempelai Pria';
-            const brideName = INVITATION_CONFIG.couple?.bride?.nickname || 'Mempelai Wanita';
+            // Pembacaan konfigurasi disesuaikan dengan struktur CONFIG di config.js
+            const phone = CONFIG.gift?.physicalGift?.phone || '6281234567890';
+            const groomName = CONFIG.couple?.groom?.shortName || 'Mempelai Pria';
+            const brideName = CONFIG.couple?.bride?.shortName || 'Mempelai Wanita';
             
             const message = `Halo ${groomName} & ${brideName}, saya telah mengirimkan kado/amplop digital untuk pernikahan kalian. Selamat atas pernikahan kalian!`;
             const waUrl = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`;
