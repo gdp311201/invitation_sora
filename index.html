@@ -1,1 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Samuel & Evelyn</title>
 
+  <!-- Fonts: Outfit + Playfair Display + Cormorant Garamond -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500;600;800&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+  <!-- CSS Modules -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/cover.css">
+  <link rel="stylesheet" href="css/sections.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+
+<!-- ============================================================
+     PRELOADER — inline CSS+JS supaya muncul sebelum file external load
+     ============================================================ -->
+<div id="preloader" class="preloader">
+  <style>
+    .preloader {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: var(--z-preloader);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 1;
+    }
+    .preloader-content {
+      position: relative; width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+    }
+    .preloader-first {
+      color: #fff; font-size: 14px; font-weight: 600;
+      letter-spacing: 3px; font-family: var(--font-serif);
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0; animation: preloader-fadeIO 1.5s .5s ease-in-out forwards;
+    }
+    .preloader-second {
+      color: #fff; font-size: 14px; font-weight: 600;
+      letter-spacing: 3px; font-family: var(--font-serif);
+      white-space: nowrap; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      animation: preloader-fadeIn 2s 2s ease-in-out forwards,
+                 preloader-slideDown 1.5s 3.5s ease-out forwards;
+    }
+    .preloader-initial {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, calc(-50% - 45px));
+    }
+    .preloader-word-mask { overflow: hidden; height: 80px; }
+    .preloader-word {
+      position: relative; top: 6rem;
+      color: #fff; font-weight: 400; font-size: 100px;
+      line-height: 90px; font-family: var(--font-display);
+      display: flex; justify-content: center;
+      padding: 0 100px;
+      animation: preloader-moveUp 1.5s 3.5s ease-out forwards,
+                 preloader-pulse 2s 3.5s infinite;
+    }
+    @keyframes preloader-fadeIO {
+      0%   { opacity: 0 } 20% { opacity: 1 }
+      80%  { opacity: 1 } 100%{ opacity: 0 }
+    }
+    @keyframes preloader-fadeIn  { to { opacity: 1 } }
+    @keyframes preloader-slideDown {
+      to { transform: translate(-50%, calc(-50% + 15px)); }
+    }
+    @keyframes preloader-moveUp {
+      to { top: 0; opacity: 1; }
+    }
+    @keyframes preloader-pulse {
+      0%,100% { transform: scale(0.9); }
+      50%     { transform: scale(1); }
+    }
+  </style>
+
+  <div class="preloader-content">
+    <span class="preloader-first">THE WEDDING OF</span>
+    <span class="preloader-second" id="preloader-names">Samuel & Evelyn</span>
+    <div class="preloader-initial">
+      <div class="preloader-word-mask">
+        <div class="preloader-word" id="preloader-initials">S & E</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.body.style.overflow = 'hidden';
+    const hidePreloader = () => {
+      const p = document.getElementById('preloader');
+      if (!p) return;
+      p.style.transition = 'opacity 0.5s ease';
+      p.style.opacity = '0';
+      setTimeout(() => { p.remove(); document.body.style.overflow = ''; }, 500);
+    };
+    const forceHide = setTimeout(hidePreloader, 10000);
+    window.addEventListener('load', () => {
+      setTimeout(() => { clearTimeout(forceHide); hidePreloader(); }, 4500);
+    });
+  </script>
+</div>
+
+
+<!-- ============================================================
+     MUSIC BUTTON (fixed, floating)
+     ============================================================ -->
+<button id="music-button" class="music-button paused" aria-label="Toggle music">
+  <svg class="music-icon music-icon--play" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+  </svg>
+  <svg class="music-icon music-icon--pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none">
+    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+  </svg>
+</button>
+
+<!-- Audio element -->
+<audio id="mp3-player" loop preload="auto"></audio>
+
+
+<!-- ============================================================
+     COVER — LEFT PANEL (desktop only, fixed)
+     ============================================================ -->
+<aside id="cover-left" class="cover-left">
+  <div class="cover-left__bg"></div>
+  <div class="cover-left__content">
+    <p class="cover-label">THE WEDDING OF</p>
+    <h1 class="cover-name">Samuel</h1>
+    <h1 class="cover-name">Evelyn</h1>
+    <span class="cover-ampersand">&</span>
+  </div>
+  <nav class="cover-nav" id="cover-nav">
+    <!-- Diisi oleh app.js dari config.nav.items -->
+  </nav>
+  <p class="cover-copyright">&copy; 2026 &#233;nvelope</p>
+</aside>
+
+
+<!-- ============================================================
+     COVER — RIGHT PANEL (hero, fixed, full screen)
+     ============================================================ -->
+<div id="cover-section" class="cover-right" style="display:none;">
+  <!-- Gradient overlay (absolute, top) -->
+  <div class="cover-right__gradient"></div>
+
+  <!-- Top: label + names + date -->
+  <div class="cover-right__top">
+    <p class="cover-label">THE WEDDING OF</p>
+    <div class="cover-right__names">
+      <h1 class="cover-name-lg">Samuel</h1>
+      <h1 class="cover-name-lg">Evelyn</h1>
+      <span class="cover-ampersand cover-ampersand--watermark">&</span>
+    </div>
+    <p class="cover-date">SATURDAY, 20 / 06 / 2026</p>
+  </div>
+
+  <!-- Middle: dear + guest name + open button -->
+  <div class="cover-right__middle">
+    <p class="cover-dear">Dear,</p>
+    <p class="cover-guest" id="guest-name">Guest</p>
+    <div class="cover-divider"></div>
+    <p class="cover-disclaimer">We apologize if there is any misspelling of name or title.</p>
+    <button id="open-invitation" class="cover-open-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/>
+      </svg>
+      <span>OPEN INVITATION</span>
+    </button>
+  </div>
+
+  <!-- Mobile-only gradient (bottom) -->
+  <div class="cover-right__mobile-gradient"></div>
+</div>
+
+
+<!-- ============================================================
+     MAIN SCROLLABLE CONTENT
+     ============================================================ -->
+<main id="main-content" class="main-content">
+
+
+  <!-- ─── OPENING ─────────────────────────────────────────── -->
+  <section id="opening" class="snap-section">
+    <div class="section-inner">
+      <h2 class="animate animate--fade delay-200ms">Mark 10:6-9</h2>
+      <p class="animate animate--fade delay-400ms">&ldquo;But at the beginning of creation God &lsquo;made them male and female.&rsquo; &lsquo;For this reason a man will leave his father and mother and be united to his wife, and the two will become one flesh.&rsquo; So they are no longer two, but one flesh. Therefore what God has joined together, let no one separate.&rdquo;</p>
+    </div>
+    <div class="opening-names">
+      <p class="animate animate--fade delay-800ms">Samuel</p>
+      <span class="opening-amp animate animate--fade delay-800ms">&</span>
+      <p class="animate animate--fade delay-800ms">Evelyn</p>
+      <p class="animate animate--fade delay-800ms">#SAMeoneforEVELYN</p>
+    </div>
+  </section>
+
+
+  <!-- ─── COUPLE — THE GROOM ───────────────────────────────── -->
+  <section id="couple" class="snap-section section-couple">
+    <div class="section-couple__overlay"></div>
+    <p class="section-label animate animate--fade delay-200ms">THE GROOM</p>
+    <p class="section-couple__name animate animate--fade delay-200ms">Samuel</p>
+    <p class="section-couple__fullname animate animate--fade delay-400ms">Samuel Jovan Hartanto</p>
+    <p class="section-couple__parent animate animate--fade delay-600ms">
+      <em>Son of</em><br>
+      Mr. Samuel&rsquo;s Father &<br>
+      Mrs. Samuel&rsquo;s Mother
+    </p>
+    <a href="https://instagram.com/sam.hartanto" target="_blank" rel="noopener"
+       class="btn-outline animate animate--fade delay-800ms">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      <span>sam.hartanto</span>
+    </a>
+  </section>
+
+
+  <!-- ─── COUPLE — THE BRIDE ───────────────────────────────── -->
+  <section id="bride" class="snap-section section-couple">
+    <div class="section-couple__overlay"></div>
+    <p class="section-label animate animate--fade delay-200ms">THE BRIDE</p>
+    <p class="section-couple__name animate animate--fade delay-200ms">Evelyn</p>
+    <p class="section-couple__fullname animate animate--fade delay-400ms">Evelyn Naomi Anastasia</p>
+    <p class="section-couple__parent animate animate--fade delay-600ms">
+      <em>Daughter of</em><br>
+      Mr. Evelyn&rsquo;s Father &<br>
+      Mrs. Evelyn&rsquo;s Mother
+    </p>
+    <a href="https://instagram.com/evelynna" target="_blank" rel="noopener"
+       class="btn-outline animate animate--fade delay-800ms">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      <span>evelynna</span>
+    </a>
+  </section>
+
+
+  <!-- ─── LOVE STORY ───────────────────────────────────────── -->
+  <section id="lovestory" class="snap-section section-lovestory">
+    <div class="section-lovestory__bg"></div>
+    <h2 class="section-lovestory__title animate animate--fade delay-400ms">The Path Where Two Hearts Unite</h2>
+
+    <div class="section-lovestory__grid">
+      <!-- Left column -->
+      <div class="section-lovestory__col">
+        <div class="lovestory-chapter animate animate--fade delay-600ms">
+          <h3>The Beginning</h3>
+          <p>Our story began like a quiet song&mdash;unexpected yet comforting. We met at just the right time, when life was still figuring itself out. What started as casual conversations turned into deep connections, shared dreams, and a sense of home in each other&rsquo;s presence.</p>
+        </div>
+        <div class="lovestory-chapter animate animate--fade delay-200ms">
+          <h3>A Promise for Forever</h3>
+          <p>Now, with joyful hearts and hopeful eyes, we&rsquo;re stepping into the next chapter. This wedding isn&rsquo;t just a celebration of a day&mdash;it&rsquo;s a celebration of a journey, a promise, and the love we&rsquo;re lucky enough to call our own.</p>
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div class="section-lovestory__col">
+        <div class="lovestory-scroll-hint animate animate--fade delay-600ms">
+          <p>Scroll to read more</p>
+          <img src="https://s3.envelope.id/wp/uploads/2026/02/arrow-white-light.webp"
+               alt="Scroll indicator" width="752" height="140" loading="lazy">
+        </div>
+        <div class="lovestory-chapter animate animate--fade delay-600ms">
+          <h3>Growing Love</h3>
+          <p>As time passed, we grew not just as individuals, but as a team. We've celebrated wins, braved challenges, and found countless reasons to laugh along the way.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── EVENTS ───────────────────────────────────────────── -->
+  <section id="events" class="snap-section section-events">
+    <h2 class="section-events__title animate animate--fade delay-200ms">Wedding<br>Events</h2>
+
+    <div class="section-events__list">
+      <!-- Event 1: Holy Matrimony -->
+      <div class="event-card animate animate--fade delay-400ms">
+        <p class="event-card__date">Saturday,<br>20 June 2026</p>
+        <p class="event-card__name animate animate--fade delay-500ms">Holy Matrimony</p>
+        <p class="event-card__time animate animate--fade delay-600ms">09.30 - 11.00 WIB</p>
+        <p class="event-card__venue animate animate--fade delay-700ms">
+          <strong>The Hermitage Hotel Jakarta</strong><br>
+          Jl. Cilacap No.1, Menteng, Kota Jakarta Pusat, DKI Jakarta 10310
+        </p>
+        <a href="https://maps.app.goo.gl/5XJrVf3zcwFKg3A58" target="_blank" rel="noopener"
+           class="btn-outline animate animate--fade delay-800ms">GOOGLE MAPS</a>
+      </div>
+
+      <!-- Event 2: Tea Pai -->
+      <div class="event-card animate animate--fade delay-400ms">
+        <p class="event-card__date">Saturday,<br>20 June 2026</p>
+        <p class="event-card__name animate animate--fade delay-500ms">Tea Pai</p>
+        <p class="event-card__time animate animate--fade delay-600ms">15.30 - 17.00 WIB</p>
+        <p class="event-card__venue animate animate--fade delay-700ms">
+          <strong>Pullman Jakarta Indonesia Thamrin</strong><br>
+          Jl. M.H. Thamrin No.59, Kec. Menteng, Kota Jakarta Pusat, DKI Jakarta 10350
+        </p>
+        <a href="https://maps.app.goo.gl/5TpUR4aBvBud16cB8" target="_blank" rel="noopener"
+           class="btn-outline animate animate--fade delay-800ms">GOOGLE MAPS</a>
+      </div>
+
+      <!-- Event 3: Reception -->
+      <div class="event-card animate animate--fade delay-400ms">
+        <p class="event-card__date">Saturday,<br>20 June 2026</p>
+        <p class="event-card__name animate animate--fade delay-500ms">Reception</p>
+        <p class="event-card__time animate animate--fade delay-600ms"
+           id="session-time" data-session2="20.00 - 21.00 WIB">19.00 - 20.00 WIB</p>
+        <p class="event-card__venue animate animate--fade delay-700ms">
+          <strong>Pullman Jakarta Indonesia Thamrin</strong><br>
+          Jl. M.H. Thamrin No.59, Kec. Menteng, Kota Jakarta Pusat, DKI Jakarta 10350
+        </p>
+        <a href="https://maps.app.goo.gl/5XJrVf3zcwFKg3A58" target="_blank" rel="noopener"
+           class="btn-outline animate animate--fade delay-800ms">GOOGLE MAPS</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── RUNDOWN ──────────────────────────────────────────── -->
+  <section id="rundown" class="snap-section section-rundown">
+    <p class="section-label animate animate--fade delay-400ms">Rundown</p>
+    <img src="https://s3.envelope.id/wp/uploads/2026/04/1615_rundown.png"
+         alt="Event Rundown" class="rundown-image animate animate--fade delay-400ms"
+         width="1020" height="1381" loading="lazy">
+  </section>
+
+
+  <!-- ─── COUNTDOWN ────────────────────────────────────────── -->
+  <section id="countdown" class="snap-section section-countdown">
+    <p class="section-label animate animate--fade delay-200ms">SAVE THE DATE</p>
+    <p class="section-countdown__subtitle animate animate--fade delay-400ms">Approaching Our Joyous Celebration</p>
+
+    <div class="countdown animate animate--fade delay-600ms"
+         id="countdown-timer" data-target="2026-06-20T09:30:00+07:00">
+      <div class="countdown-item">
+        <span class="countdown-digits" data-unit="days">00</span>
+        <span class="countdown-label">Days</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-digits" data-unit="hours">00</span>
+        <span class="countdown-label">Hours</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-digits" data-unit="minutes">00</span>
+        <span class="countdown-label">Minutes</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-digits" data-unit="seconds">00</span>
+        <span class="countdown-label">Seconds</span>
+      </div>
+    </div>
+
+    <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=The%20Wedding%20of%20Samuel%20%26%20Evelyn&details&dates=20260620/20260620&location"
+       target="_blank" rel="noopener"
+       class="btn-outline animate animate--fade delay-800ms">SAVE THE DATE</a>
+  </section>
+
+
+  <!-- ─── DRESSCODE ────────────────────────────────────────── -->
+  <section id="dresscode" class="snap-section section-dresscode">
+    <div class="section-dresscode__inner">
+      <div class="section-dresscode__bg"></div>
+      <p class="section-label animate animate--fade delay-400ms">Dresscode</p>
+      <div class="dresscode-palette animate animate--fade delay-500ms">
+        <div class="dresscode-swatch" style="background:#F1C193"></div>
+        <div class="dresscode-swatch" style="background:#D4A574"></div>
+        <div class="dresscode-swatch" style="background:#C8956E"></div>
+        <div class="dresscode-swatch" style="background:#B8860B"></div>
+        <div class="dresscode-swatch" style="background:#8B7355"></div>
+      </div>
+      <p class="dresscode-desc animate animate--fade delay-600ms">
+        We kindly encourage our guests to wear tones from our selected color palette.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ─── LIVESTREAMING ────────────────────────────────────── -->
+  <section id="livestream" class="snap-section section-livestream">
+    <div class="section-livestream__bg"></div>
+    <p class="section-livestream__title animate animate--fade delay-400ms">Join Our Exclusive Live Streaming Event</p>
+    <p class="section-livestream__datetime animate animate--fade delay-600ms">
+      Saturday, 11 April 2026<br>11:00 - 13:00 WIB
+    </p>
+    <a href="https://instagram.com/envelope.id" target="_blank" rel="noopener"
+       class="btn-outline animate animate--fade delay-800ms">JOIN LIVE</a>
+  </section>
+
+
+  <!-- ─── RSVP ─────────────────────────────────────────────── -->
+  <section id="rsvp" class="snap-section section-rsvp">
+    <p class="section-label animate animate--fade delay-200ms">RSVP</p>
+
+    <!-- Form -->
+    <form id="rsvp-form" class="rsvp-form animate animate--fade delay-400ms" novalidate>
+      <!-- Name -->
+      <div class="rsvp-field">
+        <label class="rsvp-field__label" for="field-name">NAME</label>
+        <input type="text" id="field-name" class="rsvp-field__input"
+               placeholder="Guest Name" required>
+      </div>
+
+      <!-- Attendance (radio) -->
+      <div class="rsvp-field rsvp-field--attendance-radio">
+        <label class="rsvp-field__label">ATTENDANCE</label>
+        <div class="rsvp-radio-group">
+          <label class="rsvp-radio">
+            <input type="radio" name="attendance" value="Attend">
+            <span>ATTEND</span>
+          </label>
+          <label class="rsvp-radio">
+            <input type="radio" name="attendance" value="Not Attend">
+            <span>NOT ATTEND</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Guest Count (hidden by default, shown when Attend) -->
+      <div class="rsvp-field rsvp-field--guestcount" style="display:none">
+        <label class="rsvp-field__label" for="field-guestcount">
+          NUMBER OF GUESTS <span class="rsvp-field__max"></span>
+        </label>
+        <div class="qty-wrapper">
+          <button type="button" class="qty-btn qty-btn--minus" aria-label="Decrease">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>
+          </button>
+          <input type="number" id="field-guestcount" class="rsvp-field__input rsvp-field__number"
+                 value="1" min="1" max="2">
+          <button type="button" class="qty-btn qty-btn--plus" aria-label="Increase">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Wishes -->
+      <div class="rsvp-field">
+        <label class="rsvp-field__label" for="field-wishes">WISHES</label>
+        <textarea id="field-wishes" class="rsvp-field__textarea" rows="4"
+                  placeholder="Write your wishes and blessings"></textarea>
+      </div>
+
+      <!-- Submit -->
+      <div class="rsvp-field rsvp-field--submit">
+        <button type="submit" class="btn-outline">SUBMIT</button>
+      </div>
+
+      <!-- Notices (injected by JS, placeholders here) -->
+      <div class="rsvp-notice rsvp-notice--error" style="display:none"></div>
+      <div class="rsvp-notice rsvp-notice--success" style="display:none"></div>
+    </form>
+
+    <!-- Comments list -->
+    <div id="rsvp-comments" class="rsvp-comments" style="display:none"></div>
+    <div id="rsvp-pagination" class="rsvp-pagination" style="display:none"></div>
+  </section>
+
+
+  <!-- ─── GIFT ─────────────────────────────────────────────── -->
+  <section id="gift" class="snap-section section-gift">
+    <div class="section-gift__inner">
+      <p class="section-label animate animate--fade delay-400ms">Wedding Gift</p>
+      <p class="section-gift__message animate animate--fade delay-400ms">
+        The greatest gift is having you with us. If you&rsquo;d like to give a token of love, we would be truly grateful.
+      </p>
+
+      <!-- Expandable gift container -->
+      <div class="gift-container animate animate--fade delay-600ms" id="gift-container">
+        <!-- Close button (hidden initially) -->
+        <button class="gift-close" id="gift-close">CLOSE</button>
+
+        <!-- Open button (visible initially) -->
+        <button class="gift-open" id="gift-open">SEND GIFT</button>
+
+        <!-- Expandable content (CSS grid trick: 0fr → 1fr) -->
+        <div class="gift-wrapper">
+          <div class="gift-content">
+
+            <!-- Bank 1 -->
+            <div class="gift-item">
+              <img src="https://wp.envelope.id/wp-content/uploads/2024/02/bca.png" alt="BCA" loading="lazy">
+              <div class="gift-item__info">
+                <span class="gift-item__name">Samuel Jovan Hartono</span>
+                <span class="gift-item__number">123456789</span>
+              </div>
+              <button class="gift-copy" data-copy="123456789" aria-label="Copy account number">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+            </div>
+            <div class="gift-divider"></div>
+
+            <!-- Bank 2 -->
+            <div class="gift-item">
+              <img src="https://wp.envelope.id/wp-content/uploads/2024/02/mandiri.png" alt="Mandiri" loading="lazy">
+              <div class="gift-item__info">
+                <span class="gift-item__name">Evelyn Naomi Anastasia</span>
+                <span class="gift-item__number">987654321</span>
+              </div>
+              <button class="gift-copy" data-copy="987654321" aria-label="Copy account number">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+            </div>
+            <div class="gift-divider"></div>
+
+            <!-- Physical Gift -->
+            <div class="gift-item">
+              <div class="gift-item__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M7.5 8V5.5a2.5 2.5 0 015 0V8M11.5 8V5.5a2.5 2.5 0 015 0V8"/></svg>
+              </div>
+              <div class="gift-item__info">
+                <span class="gift-item__name">Send Gift</span>
+                <span class="gift-item__number">Evelyn (08123456789)</span>
+                <span class="gift-item__number">Jl. Arcadia Raya No.9, Bandung 40288</span>
+              </div>
+              <button class="gift-copy" data-copy="Jl. Arcadia Raya No.9, Bandung 40288" aria-label="Copy address">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+            </div>
+            <div class="gift-divider"></div>
+
+            <!-- Gift Registry -->
+            <div class="gift-item">
+              <div class="gift-item__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M7.5 8V5.5a2.5 2.5 0 015 0V8M11.5 8V5.5a2.5 2.5 0 015 0V8"/></svg>
+              </div>
+              <div class="gift-item__info">
+                <span class="gift-item__name">Gift Registry</span>
+              </div>
+              <button class="gift-copy" data-href="https://instagram.com/envelope.id" aria-label="Open gift registry">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── CLOSING ──────────────────────────────────────────── -->
+  <section id="closing" class="snap-section section-closing">
+    <div class="section-closing__bg"></div>
+    <p class="section-closing__title animate animate--fade delay-400ms">Thank You for Your Presence & Blessings</p>
+    <p class="section-closing__message animate animate--fade delay-400ms">
+      We can&rsquo;t wait to share this special moment with you.<br>
+      Your presence will make our day even more meaningful.
+    </p>
+    <p class="section-closing__names animate animate--fade delay-600ms">Samuel & Evelyn</p>
+    <div class="section-closing__brand animate animate--fade delay-800ms">
+      <a href="https://instagram.com/envelope.id" target="_blank" rel="noopener">
+        <img src="https://s3.envelope.id/content/brand/envelope-horizontal-white-sm.webp"
+             alt="énvelope" loading="lazy">
+      </a>
+      <span>&copy; 2026 &#233;nvelope, All rights reserved.</span>
+    </div>
+  </section>
+
+
+</main>
+
+
+<!-- ============================================================
+     FRAME POPUP (fixed, hidden)
+     ============================================================ -->
+<div id="frame-popup" class="frame-popup" style="display:none;">
+  <div class="frame-popup__overlay"></div>
+  <div class="frame-popup__container">
+    <h2 class="frame-popup__title animate animate--fade delay-400ms">WEDDING FRAME</h2>
+    <p class="frame-popup__desc animate animate--fade delay-500ms">
+      If the frame doesn&rsquo;t open automatically, please swipe through the Instagram Highlights until you find the intended frame.
+    </p>
+    <button class="frame-popup__close" id="frame-close" aria-label="Close">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="frame-popup__video animate animate--fade delay-600ms">
+      <video autoplay muted playsinline loop>
+        <source src="https://s3.envelope.id/wp/uploads/2026/03/highlight-swipe.mp4" type="video/mp4">
+      </video>
+    </div>
+    <a href="https://instagram.com/envelope.id" target="_blank" rel="noopener"
+       class="btn-outline animate animate--fade delay-700ms">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      <span>OPEN FRAME</span>
+    </a>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     HIDDEN DATA (dibaca oleh JS)
+     ============================================================ -->
+<span id="guest-data" data-name="" data-max-guest="0" hidden></span>
+
+
+<!-- ============================================================
+     SCRIPTS — entry point
+     ============================================================ -->
+<script type="module" src="js/app.js"></script>
+
+</body>
+</html>
