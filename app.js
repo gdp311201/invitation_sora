@@ -1,3 +1,8 @@
+/**
+ * js/app.js
+ * Main Entry Point Undangan Digital
+ */
+
 import { CONFIG } from './config.js';
 import { setupMusic } from './music.js';
 import { initSnapScroll, unlockScroll } from './snap-scroll.js';
@@ -6,42 +11,51 @@ import { initCountdown } from './countdown.js';
 import { initGift } from './gift.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('App Initialized for:', CONFIG.COUPLE_NAME);
+  console.log('App Initialized for:', CONFIG.COUPLE_NAME || 'Envelope Invitation');
 
-  // Setup URL Params untuk Guest Name
+  // 1. Setup URL Params untuk Guest Name (?to=Nama atau ?guest=Nama)
   const urlParams = new URLSearchParams(window.location.search);
   const guestName = urlParams.get('to') || urlParams.get('guest');
   if (guestName) {
     const guestElem = document.getElementById('guest-name');
-    if (guestElem) guestElem.textContent = decodeURIComponent(guestName);
+    if (guestElem) {
+      guestElem.textContent = decodeURIComponent(guestName);
+    }
   }
 
-  // Handle Open Invitation Button Click
+  // 2. Setup Pemutar Musik
+  const { playMusic } = setupMusic();
+
+  // 3. Handle Open Invitation Button Click
   const btnOpen = document.getElementById('btn-open-invitation');
   const musicToggle = document.getElementById('music-toggle');
 
   if (btnOpen) {
     btnOpen.addEventListener('click', () => {
-      // 1. Unlock Body Scroll
+      // Unlock Body Scroll
       document.body.classList.remove('is-locked');
-      
-      // 2. Play Audio & Show Toggle Button
-      const { playMusic } = setupMusic();
-      playMusic();
-      if (musicToggle) musicToggle.classList.remove('hidden');
+      if (typeof unlockScroll === 'function') {
+        unlockScroll();
+      }
 
-      // 3. Smooth Scroll to Next Section
+      // Play Audio & Tampilkan Tombol Toggle Musik
+      playMusic();
+      if (musicToggle) {
+        musicToggle.classList.remove('hidden');
+      }
+
+      // Smooth Scroll ke Section Pertama (Quote / Couple)
       const quoteSection = document.getElementById('quote');
       if (quoteSection) {
         quoteSection.scrollIntoView({ behavior: 'smooth' });
       }
 
-      // 4. Init Snap Scroll
+      // Inisialisasi Snap Scroll setelah undangan dibuka
       initSnapScroll();
     });
   }
 
-  // Initialize Other Modules
+  // 4. Initialize Other Modules
   initRSVP();
   initCountdown();
   initGift();
